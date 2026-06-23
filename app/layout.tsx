@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Aladin, Quicksand, Roboto } from "next/font/google";
 
+import Providers from "@/components/base/providers";
 import "./globals.css";
 
 
@@ -45,8 +46,9 @@ export default function RootLayout({
     >
       <body className="flex min-h-screen flex-col bg-[#DCDCDC] text-[#000000]">
         
-
-        <main className="flex-1">{children}</main>
+        <Providers>
+          <main className="flex-1">{children}</main>
+        </Providers>
 
         
       </body>

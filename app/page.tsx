@@ -203,6 +203,7 @@ export default function Home() {
           </p>
 
           <Link
+            
             href="/dashboard"
             className="inline-block mt-10 px-8 py-4 bg-white text-blue-600 rounded-xl font-semibold"
           >

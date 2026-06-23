@@ -10,7 +10,8 @@ import {
   BarChart3, 
   Settings, 
   Menu, 
-  X 
+  X,
+  LogOut 
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -18,11 +19,13 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
+    { name: "Home", href: "/", icon: LayoutDashboard },
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Transactions", href: "/transactions", icon: ReceiptText },
     { name: "Categories", href: "/categories", icon: Tags },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
     { name: "Settings", href: "/settings", icon: Settings },
+    { name: "Logout", href: "/logout", icon: LogOut },
   ];
 
   // Helper component for the navigation links to avoid code duplication
