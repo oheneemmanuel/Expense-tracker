@@ -3,169 +3,191 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
-// Palette used on this page (ties into the existing Aladin/Quicksand/Roboto
-// font variables already set up in layout.tsx):
-// --indigo     #3B4F73  primary action — dyed-thread blue
-// --clay       #B5572A  errors / accent — fired-clay terracotta
-// --kraft      #ECE3CC  card background — kraft tag paper
-// --kraft-soft #F6EFDC  input background — lighter kraft
-// --ink        #2B2420  text — dark walnut ink
-// --thread     #8C7A5B  muted text, borders — jute thread
+import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export default function RegisterPage() {
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Status and UI submission states
+  const [msg, setMsg] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setMsg("");
+    setIsError(false);
+    setIsLoading(true);
 
-    const response = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      setError(data.error || "Failed to register");
-      return;
-    }
+      if (!response.ok) {
+        setIsError(true);
+        setMsg(data.error || "Failed to register account.");
+        setIsLoading(false);
+        return;
+      }
 
-    // Automatically log the user in after a successful registration
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
+      setIsError(false);
+      setMsg("Account registered! Logging you in...");
 
-    if (result?.error) {
-      router.push("/login");
-    } else {
-      router.push("/dashboard");
-      router.refresh();
+      // Automatically log the user in after a successful registration
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.error) {
+        router.push("/login");
+      } else {
+        router.push("/dashboard");
+        router.refresh();
+      }
+    } catch (err) {
+      setIsError(true);
+      setMsg("Something went wrong. Please try again.");
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="hh-weave relative flex min-h-screen items-center justify-center bg-[#D9D2C2] px-4 py-16">
-      <style>{`
-        .hh-weave {
-          background-image: radial-gradient(rgba(43,36,32,0.06) 1px, transparent 1px);
-          background-size: 14px 14px;
-        }
-      `}</style>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <Link href="/login" className="absolute top-4 left-4 flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-all">
+        <ArrowLeft size={16} />
+        Back to Login
+      </Link>
 
-      <form
-        onSubmit={handleSubmit}
-        className="relative w-full max-w-sm -rotate-[0.6deg] rounded-sm border-2 border-dashed border-[#8C7A5B] bg-[#ECE3CC] p-8 pt-12 shadow-xl"
-      >
-        {/* swing-tag hole + string */}
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 60 40"
-          className="absolute -top-7 left-1/2 h-10 w-16 -translate-x-1/2"
-        >
-          <path
-            d="M10 35 Q30 -6 50 35"
-            fill="none"
-            stroke="#8C7A5B"
-            strokeWidth="2"
-            strokeDasharray="4 3"
-          />
-          <circle cx="30" cy="7" r="4.5" fill="#ECE3CC" stroke="#2B2420" strokeWidth="2" />
-        </svg>
-
-        <h1 className="text-center text-3xl text-[#2B2420] [font-family:var(--font-title)]">
-          Create an Account
-        </h1>
-        <p className="mt-1 text-center text-xs uppercase tracking-widest text-[#8C7A5B] [font-family:var(--font-small)]">
-          Join our community of makers
-        </p>
-
-        {error && (
-          <div className="mt-5 rounded-sm border border-[#B5572A]/40 bg-[#B5572A]/10 px-3 py-2 text-sm text-[#B5572A] [font-family:var(--font-body)]">
-            {error}
-          </div>
-        )}
-
-        <div className="mt-6 space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="mb-1 block text-xs uppercase tracking-wide text-[#8C7A5B] [font-family:var(--font-small)]"
-            >
-              Full Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              placeholder="Jane Maker"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-sm border border-[#8C7A5B]/40 bg-[#F6EFDC] px-3 py-2.5 text-[#2B2420] placeholder:text-[#8C7A5B]/60 [font-family:var(--font-body)] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#3B4F73]"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-1 block text-xs uppercase tracking-wide text-[#8C7A5B] [font-family:var(--font-small)]"
-            >
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="jane@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full rounded-sm border border-[#8C7A5B]/40 bg-[#F6EFDC] px-3 py-2.5 text-[#2B2420] placeholder:text-[#8C7A5B]/60 [font-family:var(--font-body)] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#3B4F73]"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-1 block text-xs uppercase tracking-wide text-[#8C7A5B] [font-family:var(--font-small)]"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full rounded-sm border border-[#8C7A5B]/40 bg-[#F6EFDC] px-3 py-2.5 text-[#2B2420] placeholder:text-[#8C7A5B]/60 [font-family:var(--font-body)] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#3B4F73]"
-            />
-          </div>
+      <div className="w-full max-w-md space-y-6 rounded-xl border border-gray-200 bg-white p-8 shadow-md">
+        
+        {/* Header Title Section */}
+        <div className="text-center">
+          <h2 className="text-2xl font-bold uppercase tracking-wide text-gray-950">Create Account</h2>
+          <p className="mt-2 text-sm text-gray-500">Sign up to get started with your dashboard</p>
         </div>
 
-        <button
-          type="submit"
-          className="mt-7 w-full rounded-sm bg-[#3B4F73] py-3 font-semibold tracking-wide text-[#ECE3CC] [font-family:var(--font-body)] transition-colors hover:bg-[#314363] focus:outline-none focus:ring-2 focus:ring-[#2B2420] focus:ring-offset-2 focus:ring-offset-[#ECE3CC]"
-        >
-          Register
-        </button>
+        <form className="mt-6 flex flex-col gap-5" onSubmit={handleSubmit}>
+          
+          {/* Status Alert Notification Box */}
+          {msg && (
+            <div
+              className={`p-3 rounded-lg text-sm text-center font-medium border transition-all ${
+                isError
+                  ? "bg-red-50 text-red-600 border-red-200"
+                  : "bg-green-50 text-green-600 border-green-200"
+              }`}
+            >
+              {msg}
+            </div>
+          )}
 
-        <p className="mt-5 text-center text-sm text-[#8C7A5B] [font-family:var(--font-body)]">
-          Already part of the workshop?{" "}
-          <a
-            href="/login"
-            className="text-[#3B4F73] underline underline-offset-2 hover:text-[#2B2420]"
+          {/* Full Name Field */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="name" className="text-xs font-bold tracking-wider text-gray-700 uppercase">
+              Full Name
+            </label>
+            <div className="relative flex items-center">
+              <User className="absolute left-3 text-gray-400" size={18} />
+              <input
+                id="name"
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="John Doe"
+                className="w-full bg-gray-50 pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 font-medium placeholder:text-gray-400 focus:border-black focus:bg-white outline-none transition-all text-sm"
+                required
+                disabled={isLoading}
+              />
+            </div>
+          </div>
+
+          {/* Email Field */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="email" className="text-xs font-bold tracking-wider text-gray-700 uppercase">
+              Email Address
+            </label>
+            <div className="relative flex items-center">
+              <Mail className="absolute left-3 text-gray-400" size={18} />
+              <input
+                id="email"
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@example.com"
+                className="w-full bg-gray-50 pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 font-medium placeholder:text-gray-400 focus:border-black focus:bg-white outline-none transition-all text-sm"
+                required
+                autoComplete="email"
+                disabled={isLoading}
+              />
+            </div>
+          </div>
+
+          {/* Password Field */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="password" className="text-xs font-bold tracking-wider text-gray-700 uppercase">
+              Password
+            </label>
+            <div className="relative flex items-center">
+              <Lock className="absolute left-3 text-gray-400" size={18} />
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full bg-gray-50 pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg text-gray-900 font-medium placeholder:text-gray-400 focus:border-black focus:bg-white outline-none transition-all text-sm"
+                required
+                autoComplete="new-password"
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 text-gray-400 hover:text-gray-600 focus:outline-none"
+                disabled={isLoading}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Clear, Standard Action Button */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`mt-2 w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg text-sm font-semibold text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors ${
+              isLoading ? "opacity-70 cursor-not-allowed" : "cursor-pointer"
+            }`}
           >
+            {isLoading ? "Creating Account..." : "Register"}
+          </button>
+        </form>
+
+        {/* Alternate Routing Link */}
+        <div className="text-sm text-center pt-2">
+          <span className="text-gray-500">Already have an account? </span>
+          <a href="/login" className="font-medium text-gray-600 hover:text-black hover:underline transition-all">
             Log in
           </a>
-        </p>
-      </form>
+        </div>
+      </div>
     </div>
   );
 }
