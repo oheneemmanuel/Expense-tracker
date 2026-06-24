@@ -3,6 +3,8 @@
 import { useState } from "react";
 // Importing your named server action
 import { createTransaction } from "@/app/actions/transactions";
+//import redirect
+import { useRouter } from "next/navigation";
 
 export default function AddExpensePage() {
   const [amount, setAmount] = useState("");
@@ -10,6 +12,10 @@ export default function AddExpensePage() {
     new Date().toISOString().split("T")[0]
   );
   const [type, setType] = useState<"INCOME" | "EXPENSE" | "">("");
+  
+
+  // a router to direct to the dashboard after adding transaction
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,6 +35,8 @@ export default function AddExpensePage() {
       setAmount("");
       setType("");
       setDate(new Date().toISOString().split("T")[0]);
+
+      router.push("/dashboard")
       
       
     } else {

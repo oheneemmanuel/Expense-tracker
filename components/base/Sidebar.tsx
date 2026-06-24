@@ -6,7 +6,6 @@ import Link from "next/link";
 import { 
   LayoutDashboard, 
   ReceiptText, 
-  Tags, 
   BarChart3, 
   Settings, 
   Menu, 
@@ -21,9 +20,8 @@ export default function Sidebar() {
   const navItems = [
     { name: "Home", href: "/", icon: LayoutDashboard },
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Transactions", href: "/transactions", icon: ReceiptText },
-    { name: "Categories", href: "/categories", icon: Tags },
-    { name: "Analytics", href: "/analytics", icon: BarChart3 },
+    { name: "Transactions", href: "/dashboard/transactions", icon: ReceiptText },
+    { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
     { name: "Settings", href: "/settings", icon: Settings },
     { name: "Logout", href: "/logout", icon: LogOut },
   ];

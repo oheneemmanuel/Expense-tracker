@@ -152,14 +152,22 @@ export default function SignInCard() {
         </form>
 
         {/* Account Recovery */}
-        <div className="text-sm text-center pt-2">
+        <div className="text-sm text-center pt-2 flex-justify-center gap-5 ">
           <a
             href="#"
             className="font-medium text-gray-600 hover:text-black hover:underline transition-all"
           >
             Forgot your password?
           </a>
+           <a
+            href="register"
+            className="ml-4 font-medium text-gray-600 hover:text-black hover:underline transition-all"
+          >
+            Create an account?
+          </a>
+          
         </div>
+        
       </div>
     </div>
   );

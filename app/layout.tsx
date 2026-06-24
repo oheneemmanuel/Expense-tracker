@@ -24,8 +24,12 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Handcrafted Haven",
-  description: "Handmade Goods & Artisan Creations",
+  title: {
+    default: "Expense Tracker",
+    template :"%s | Expense Tracker",
+  },
+ 
+  description: "Track your expenses and income",
 };
 
 export default function RootLayout({

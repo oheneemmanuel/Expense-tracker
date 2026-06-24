@@ -11,6 +11,7 @@ generator client {
 datasource db {
   provider = "postgresql"
  
+ 
 }
 
 enum TransactionType {
@@ -24,6 +25,8 @@ model Transaction {
   amount Float
   date DateTime
   createdAt DateTime @default(now())
+  userId String
+  user User @relation(fields: [userId], references: [id])
 }
 
 model User {
@@ -34,4 +37,5 @@ model User {
   name String 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  transactions Transaction[]
 }
