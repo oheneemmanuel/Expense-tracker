@@ -1,11 +1,16 @@
 import  { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 
-export async function getMonthlyAnalytics(userId: string) {
+export async function getMonthlyAnalytics() {
+  const user = await getCurrentUser();
   // 1. Fetch all transactions for this specific user from the database
+  if (!user) {
+    return [];
+
+  }
   const transactions = await db.transaction.findMany({
     where: {
-      userId: userId,
+      userId: user.id,
     },
     select: {
       amount: true,

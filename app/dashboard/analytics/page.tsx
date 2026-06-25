@@ -1,12 +1,20 @@
 // app/analytics/page.tsx
 import { getMonthlyAnalytics } from "@/components/base/MontlyAnalytics";
 
+import { getCurrentUser } from "@/lib/getCurrentUser";
+
 export default async function AnalyticsPage() {
   // Replace this placeholder string with your actual session userId check 
   // e.g., const session = await getServerSession(); const userId = session.user.id;
-  const currentUserId = "replace-with-actual-user-id"; 
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return (
+      <div className="p-6"><p>Please sign in first</p></div>
+    );
+  }
   
-  const months = await getMonthlyAnalytics(currentUserId);
+  const months = await getMonthlyAnalytics();
 
   return (
     <div className="p-6 space-y-6 max-w-4xl mx-auto">

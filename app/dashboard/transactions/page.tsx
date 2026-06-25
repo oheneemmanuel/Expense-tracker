@@ -1,13 +1,25 @@
 import { db } from "@/lib/db";
 import { RecentTransactions } from "@/components/base/RecentTransaction";
+import { getCurrentUser } from "@/lib/getCurrentUser";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "transaction"
 }
 
 export default async function TransactionPage() {
+  //Get the current looged user
+  const user = await getCurrentUser();
+  if (!user || !user.id) {
+    redirect("/login");
+  }
+
+
   // Fetch the latest 10 items directly on the server
   const latestTransactions = await db.transaction.findMany({
+    where: {
+      userId: user.id
+    },
     orderBy: {
       date: "desc",
     },
