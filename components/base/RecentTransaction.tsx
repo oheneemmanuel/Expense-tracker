@@ -1,11 +1,11 @@
-"use client";
+"use client"; // <--- CRITICAL: Must be at the very top!
 
 import { useState } from "react";
 import {
   deleteTransaction,
   updateTransaction,
 } from "@/app/actions/transactions"; // Adjust path to your actions file
-import { Trash2, Edit2, Check, X } from "lucide-react";
+import { Trash2, Edit2, Check, X, Search } from "lucide-react";
 
 interface Transaction {
   id: string;
@@ -22,6 +22,9 @@ export function RecentTransactions({
   // Store the ID of the transaction currently being edited
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isMutating, setIsMutating] = useState(false);
+
+  // search button state
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Form states for the row actively being edited
   const [editType, setEditType] = useState<"INCOME" | "EXPENSE">("EXPENSE");
@@ -76,20 +79,59 @@ export function RecentTransactions({
     }
   };
 
+  // --- FILTER TRANSACTIONS BASED ON SEARCH TERM ---
+  const filteredTransactions = initialTransactions.filter((tx) => {
+    if (!searchTerm.trim()) return true;
+
+    const lowerSearch = searchTerm.toLowerCase();
+
+    // 1. Format the date to match what the user sees/types (e.g., "Jan 15, 2026")
+    const formattedDate = new Date(tx.date)
+      .toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+      .toLowerCase();
+
+    // 2. Format type and amount to search against
+    const typeMatch = tx.type.toLowerCase().includes(lowerSearch);
+    const amountMatch = tx.amount.toString().includes(lowerSearch);
+    const dateMatch = formattedDate.includes(lowerSearch);
+
+    return typeMatch || amountMatch || dateMatch;
+  });
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      {/* Search Input Container */}
+      <div className="relative m-5">
+        {/* Fixed Tailwind typo: replaced top-1/2-translatee-y-1/2 with -translate-y-1/2 */}
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search by date, year, type, or amount..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full bg-white border border-gray-300 rounded-lg pl-10 pr-4 py-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black"
+        />
+      </div>
+
       <div className="p-5 border-b border-gray-100">
         <h3 className="font-bold text-gray-900 text-lg">Recent Transactions</h3>
         <p className="text-xs text-gray-500">Showing your latest activities</p>
       </div>
 
       <div className="divide-y divide-gray-100">
-        {initialTransactions.length === 0 ? (
+        {/* Changed from initialTransactions to filteredTransactions */}
+        {filteredTransactions.length === 0 ? (
           <p className="p-6 text-center text-sm text-gray-400">
-            No recent history logged yet.
+            {initialTransactions.length === 0
+              ? "No recent history logged yet."
+              : "No transactions match your search."}
           </p>
         ) : (
-          initialTransactions.map((tx) => {
+          filteredTransactions.map((tx) => {
             const isEditing = editingId === tx.id;
             const absoluteDate = new Date(tx.date).toLocaleDateString("en-US", {
               month: "short",
@@ -165,9 +207,13 @@ export function RecentTransactions({
 
                     <div className="flex items-center justify-between sm:justify-end gap-6 ml-0 sm:ml-auto w-full sm:w-auto">
                       <span
-                        className={`text-base font-bold ${tx.type === "INCOME" ? "text-green-600" : "text-red-600"}`}
+                        className={`text-base font-bold ${
+                          tx.type === "INCOME"
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
                       >
-                        {tx.type === "INCOME" ? "+" : "-"} GH₵
+                        {tx.type === "INCOME" ? "+" : "-"} GH₵{" "}
                         {Number(tx.amount).toFixed(2)}
                       </span>
 

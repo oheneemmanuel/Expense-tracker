@@ -23,7 +23,7 @@ export default function Sidebar() {
     { name: "Transactions", href: "/dashboard/transactions", icon: ReceiptText },
     { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
-    { name: "Logout", href: "/logout", icon: LogOut },
+    { name: "Logout", href: "/api/auth/signout?callbackUrl=/", icon: LogOut },
   ];
 
   // Helper component for the navigation links to avoid code duplication

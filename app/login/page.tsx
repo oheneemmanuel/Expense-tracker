@@ -55,6 +55,10 @@ export default function SignInCard() {
         <ArrowLeft size={16} />
         Back to Dashboard
       </Link>
+      <Link href="/" className="absolute top-4 right-4 flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-all">
+        <ArrowLeft size={16} />
+        Home
+      </Link>
 
       <div className="w-full max-w-md space-y-6 rounded-xl border border-gray-200 bg-white p-8 shadow-md">
         {/* Header Title Section */}
@@ -154,7 +158,7 @@ export default function SignInCard() {
         {/* Account Recovery */}
         <div className="text-sm text-center pt-2 flex-justify-center gap-5 ">
           <a
-            href="#"
+            href="/forget-password"
             className="font-medium text-gray-600 hover:text-black hover:underline transition-all"
           >
             Forgot your password?

@@ -46,20 +46,20 @@ export default function AddExpensePage() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm h-fit">
-        <h3 className="font-semibold text-slate-900 mb-4 text-base">
+      <div className="bg-white p-6 rounded-xl border border-black-200 shadow-sm h-fit">
+        <h3 className="font-semibold text-black-900 mb-4 text-base">
           Log New Transaction
         </h3>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           {/* TYPE */}
           <div>
-            <label className="block text-xs font-semibold text-slate-600 uppercase mb-1">
+            <label className="block text-xs font-semibold text-black-600 uppercase mb-1">
               Type
             </label>
 
             <select
-              className="w-full text-sm p-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500"
+              className="w-full text-sm p-2.5 bg-black-50 border border-black-200 rounded-lg focus:outline-none focus:border-blue-500"
               value={type}
               onChange={(e) =>
                 setType(e.target.value as "INCOME" | "EXPENSE")
@@ -73,13 +73,13 @@ export default function AddExpensePage() {
 
           {/* DATE */}
           <div>
-            <label className="block text-xs font-semibold text-slate-600 uppercase mb-1">
+            <label className="block text-xs font-semibold text-black-600 uppercase mb-1">
               Date
             </label>
 
             <input
               type="date"
-              className="w-full text-sm p-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500"
+              className="w-full text-sm p-2.5 bg-black-50 border border-black-200 rounded-lg focus:outline-none focus:border-blue-500"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
@@ -87,14 +87,14 @@ export default function AddExpensePage() {
 
           {/* AMOUNT */}
           <div>
-            <label className="block text-xs font-semibold text-slate-600 uppercase mb-1">
+            <label className="block text-xs font-semibold text-black-600 uppercase mb-1">
               Amount (₵)
             </label>
 
             <input
               type="number"
               placeholder="0.00"
-              className="w-full text-sm p-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500"
+              className="w-full text-sm p-2.5 bg-black-50 border border-black-200 rounded-lg focus:outline-none focus:border-blue-500"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />

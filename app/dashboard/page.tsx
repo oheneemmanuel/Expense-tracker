@@ -112,44 +112,44 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8 max-w-6xl mx-auto p-4 md:p-6">
       {/* HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-black-100 pb-5">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900 uppercase">
+          <h2 className="text-2xl font-bold tracking-tight text-black-900 uppercase">
             WELCOME BACK, {user.name || user.email}!
           </h2>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-black-500">
             Live financial health and expense tracking dashboard.
           </p>
         </div>
-        <div className="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-md self-start sm:self-auto">
+        <div className="text-xs font-medium text-black-500 bg-black-100 px-3 py-1.5 rounded-md self-start sm:self-auto">
           Updated: Just Now
         </div>
       </div>
 
       {/* FINANCIAL SUMMARY CARDS */}
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
+      <div className="mx-auto w-full max-w-7xl grid gap-4 grid-cols-1 sm:grid-cols-3 wrap">
         {/* Card 1: Daily Expenses */}
-        <div className="p-6 bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="p-6 bg-white rounded-xl border border-black-200 shadow-sm">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-slate-500">
+            <h3 className="text-sm font-medium text-black-500">
               Today's Expenses
             </h3>
             <span className="text-rose-600 bg-rose-50 px-2 py-0.5 rounded text-xs font-medium">
               Daily Outflow
             </span>
           </div>
-          <p className="mt-2 text-3xl font-bold text-slate-900">
+          <p className="mt-2 text-3xl font-bold text-black-900">
             ₵{dailyExpenses.toFixed(2)}
           </p>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-black-400 mt-1">
             Total expenses recorded today
           </p>
         </div>
 
         {/* Card 2: Weekly Overview */}
-        <div className="p-6 bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="p-6 bg-white rounded-xl border border-black-200 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-slate-500">
+            <h3 className="text-sm font-medium text-black-500">
               Weekly Overview
             </h3>
             <span className="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-xs font-medium">
@@ -160,7 +160,7 @@ export default async function DashboardPage() {
           <div className="space-y-3">
             <div>
               <div className="flex items-center justify-between text-xs mb-1.5">
-                <span className="flex items-center gap-1 text-slate-500">
+                <span className="flex items-center gap-1 text-black-500">
                   <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
                   Income
                 </span>
@@ -168,7 +168,7 @@ export default async function DashboardPage() {
                   ₵{weeklyIncome.toFixed(2)}
                 </span>
               </div>
-              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-2 bg-black-100 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-emerald-500 rounded-full transition-all"
                   style={{ width: `${(weeklyIncome / weekMax) * 100}%` }}
@@ -178,7 +178,7 @@ export default async function DashboardPage() {
 
             <div>
               <div className="flex items-center justify-between text-xs mb-1.5">
-                <span className="flex items-center gap-1 text-slate-500">
+                <span className="flex items-center gap-1 text-black-500">
                   <TrendingDown className="w-3.5 h-3.5 text-rose-500" />
                   Expenses
                 </span>
@@ -186,7 +186,7 @@ export default async function DashboardPage() {
                   ₵{weeklyExpenses.toFixed(2)}
                 </span>
               </div>
-              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-2 bg-black-100 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-rose-500 rounded-full transition-all"
                   style={{ width: `${(weeklyExpenses / weekMax) * 100}%` }}
@@ -195,8 +195,8 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-            <span className="text-xs text-slate-400">Net since Monday</span>
+          <div className="mt-4 pt-3 border-t border-black-100 flex items-center justify-between">
+            <span className="text-xs text-black-400">Net since Monday</span>
             <span
               className={`text-sm font-bold ${
                 weeklyNet >= 0 ? "text-emerald-600" : "text-rose-600"
@@ -280,7 +280,7 @@ export default async function DashboardPage() {
       <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">
         {/* Actions Button */}
         <div>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-black-500">
             Feel free to add new expenses or income entries at any time.
           </p>
           <br />
@@ -293,26 +293,26 @@ export default async function DashboardPage() {
         </div>
 
         {/** RECENT LOGS */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 lg:col-span-2">
-          <h3 className="text-lg font-semibold text-slate-900 mb-4">
+        <div className="bg-white p-6 rounded-xl border border-black-200 lg:col-span-2">
+          <h3 className="text-lg font-semibold text-black-900 mb-4">
             Recent Logs
           </h3>
           <div className="space-y-4">
             {recentTransactions.length === 0 ? (
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-black-500">
                 No recent logs available.
               </p>
             ) : (
               recentTransactions.map((tx) => (
                 <div
                   key={tx.id}
-                  className="flex justify-between items-center text-sm border-b border-slate-50 pb-2"
+                  className="flex justify-between items-center text-sm border-b border-black-50 pb-2"
                 >
                   <div>
-                    <p className="font-medium text-slate-800">
+                    <p className="font-medium text-black-800">
                       {tx.type}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-black-400">
                       {new Date(tx.createdAt).toLocaleDateString()}
                     </p>
                   </div>
